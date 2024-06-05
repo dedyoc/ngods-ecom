@@ -1,0 +1,52 @@
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - LOGS_CAPTURED - Started capturing logs in process (pid: 1916794).
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_START - Started execution of step "silver__brazilian_ecommerce__fact_sales".
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Loading data from Iceberg table: order_items
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "order_items" using input manager "iceberg_io_manager"
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Loading data from Iceberg table: order_payments
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "order_payments" using input manager "iceberg_io_manager"
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Loading data from Iceberg table: order_reviews
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "order_reviews" using input manager "iceberg_io_manager"
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Loading data from Iceberg table: orders
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "orders" using input manager "iceberg_io_manager"
+[32m2024-05-28 04:30:08 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "order_items" of type "Any". (Type check passed).
+[32m2024-05-28 04:30:09 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "order_payments" of type "Any". (Type check passed).
+[32m2024-05-28 04:30:09 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "order_reviews" of type "Any". (Type check passed).
+[32m2024-05-28 04:30:09 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "orders" of type "Any". (Type check passed).
+[32m2024-05-28 04:30:09 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Creating fact_sales table from iceberg.brazilian_ecommerce.order_items, iceberg.brazilian_ecommerce.orders, iceberg.brazilian_ecommerce.order_payments, iceberg.brazilian_ecommerce.order_reviews
+[32m2024-05-28 04:30:09 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-28 04:30:09 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - DDL: CREATE TABLE iceberg.silver.fact_sales AS 
+SELECT 
+    oi.order_id,
+    oi.order_item_id,
+    oi.product_id,
+    oi.seller_id,
+    o.customer_id,
+    oi.price,
+    oi.freight_value,
+    op.payment_type,
+    op.payment_value,
+    review.review_score
+FROM 
+    iceberg.bronze.order_items AS oi
+JOIN 
+    iceberg.bronze.orders AS o ON oi.order_id = o.order_id
+JOIN 
+    iceberg.bronze.order_payments AS op ON oi.order_id = op.order_id
+JOIN 
+    iceberg.bronze.order_reviews AS review ON oi.order_id = review.order_id
+    
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Table fact_sales created in Iceberg
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - row_count: 72753
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: order_id, Type: varchar
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: order_item_id, Type: integer
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: product_id, Type: varchar
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: seller_id, Type: varchar
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: customer_id, Type: varchar
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: price, Type: real
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: freight_value, Type: real
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: payment_type, Type: varchar
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: payment_value, Type: real
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - silver__brazilian_ecommerce__fact_sales - Column: review_score, Type: integer
+[32m2024-05-28 04:30:14 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - ASSET_MATERIALIZATION - Materialized value silver brazilian_ecommerce fact_sales.
+[32m2024-05-28 04:30:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - HANDLED_OUTPUT - Handled output "result" using IO manager "iceberg_io_manager"
+[32m2024-05-28 04:30:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - b130b925-2495-4e5b-bf43-f0d9b691fa15 - 1916794 - silver__brazilian_ecommerce__fact_sales - STEP_SUCCESS - Finished execution of step "silver__brazilian_ecommerce__fact_sales" in 6.28s.

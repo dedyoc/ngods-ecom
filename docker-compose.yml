@@ -1,0 +1,141 @@
+services:
+  de_mysql:
+    image: mysql:8.0
+    container_name: de_mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - env
+    networks:
+      - ndsnet
+  minio:
+    hostname: minio
+    image: 'minio/minio'
+    container_name: minio_ngods
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - ./data/minio:/data
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    command: server /data --console-address ":9001"
+    networks:
+      - ndsnet
+    healthcheck:
+      test: timeout 5s bash -c ':> /dev/tcp/127.0.0.1/9000' || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mc:
+    image: minio/mc
+    container_name: mc_ngods
+    hostname: mc
+    environment:
+      - AWS_ACCESS_KEY_ID=minio
+      - AWS_SECRET_ACCESS_KEY=minio123
+      - AWS_REGION=us-east-1
+    networks:
+      - ndsnet
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add minio http://minio:9000 minio minio123) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb minio/lakehouse;
+      /usr/bin/mc policy set public minio/lakehouse;
+      exit 0;
+      "    
+    depends_on:
+      minio:
+        condition: service_healthy  
+
+  postgres:
+    image: postgres
+    hostname: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=ngods
+      - POSTGRES_USER=ngods
+      - POSTGRES_DB=ngods
+    ports:
+      - '5432:5432'
+    networks:
+      - ndsnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ngods"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  
+  trino:
+    build: trino/
+    container_name: trino
+    volumes:
+      - ./data/stage:/var/lib/ngods/stage
+      - ./certs/trino.pass:/trino.pass
+      - ./certs/trino_key_and_cert.pem:/trino_key_and_cert.pem
+      - ./certs/trino_key.pem:/trino_key.pem
+      - ./certs/trino_cert.pem:/trino_cert.pem
+    ports:
+      - '8060:8060' # Trino
+      - '8063:8063' # Trino
+    networks:
+      ndsnet:
+        aliases:
+          - trino
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    # ulimits:
+    #   nproc: 65535
+    #   nofile:
+    #     soft: 20000
+    #     hard: 40000
+
+
+  metabase-app:
+    image: metabase/metabase
+    restart: always
+    ports:
+      - 13000:3000
+    volumes:
+      # declare your mount volume /host/dir:/container/dir
+      - ./metabase-data:/metabase-data
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: postgres
+      MB_DB_PORT: 5432
+      MB_DB_USER: ngods
+      MB_DB_PASS: ngods
+      MB_DB_HOST: postgres
+    networks:
+      - ndsnet
+    depends_on:
+      - postgres
+  jupyter:
+    build: ./jupyter
+    container_name: jupyter_notebook
+    user: root
+    ports:
+      - '8888:8888'
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data:/home/jovyan/data
+    environment:
+      JUPYTER_ENABLE_LAB: 'yes'
+#      CHOWN_HOME: 'yes'
+#      CHOWN_HOME_OPTS: '-R'
+    networks:
+      - ndsnet
+    depends_on:
+      - trino
+networks:
+  ndsnet:
+    driver: bridge

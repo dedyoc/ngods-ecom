@@ -1,0 +1,33 @@
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - LOGS_CAPTURED - Started capturing logs in process (pid: 2069377).
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_START - Started execution of step "gold__brazilian_ecommerce__order_frequency_monthly".
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - gold__brazilian_ecommerce__order_frequency_monthly - Loading data from Iceberg table: dim_orders
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - LOADED_INPUT - Loaded input "dim_orders" using input manager "iceberg_io_manager"
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - gold__brazilian_ecommerce__order_frequency_monthly - Loading data from Iceberg table: fact_sales
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - LOADED_INPUT - Loaded input "fact_sales" using input manager "iceberg_io_manager"
+[32m2024-05-28 05:14:32 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_INPUT - Got input "dim_orders" of type "Any". (Type check passed).
+[32m2024-05-28 05:14:33 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_INPUT - Got input "fact_sales" of type "Any". (Type check passed).
+[32m2024-05-28 05:14:33 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - gold__brazilian_ecommerce__order_frequency_monthly - Creating gold layer table 'order_frequency_monthly'
+[32m2024-05-28 05:14:33 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-28 05:14:33 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - gold__brazilian_ecommerce__order_frequency_monthly - DDL: CREATE TABLE iceberg.gold.order_frequency_monthly AS 
+    SELECT 
+        year(o.order_delivered_customer_date) AS year, 
+        month(o.order_delivered_customer_date) AS month,
+        COUNT(*) AS order_frequency
+    FROM 
+        iceberg.silver.fact_sales AS f
+    JOIN 
+        iceberg.silver.dim_orders AS o ON f.order_id = o.order_id
+    WHERE 
+        o.order_delivered_customer_date IS NOT NULL
+    GROUP BY 
+        year(o.order_delivered_customer_date), 
+        month(o.order_delivered_customer_date)  
+    ORDER BY 
+        year(o.order_delivered_customer_date),
+        month(o.order_delivered_customer_date)
+    
+[32m2024-05-28 05:14:33 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - gold__brazilian_ecommerce__order_frequency_monthly - Table order_frequency_monthly created in Iceberg
+[32m2024-05-28 05:14:34 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - gold__brazilian_ecommerce__order_frequency_monthly - Schema Info: {'year': 'bigint', 'month': 'bigint', 'order_frequency': 'bigint'}
+[32m2024-05-28 05:14:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - ASSET_MATERIALIZATION - Materialized value gold brazilian_ecommerce order_frequency_monthly.
+[32m2024-05-28 05:14:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - HANDLED_OUTPUT - Handled output "result" using IO manager "iceberg_io_manager"
+[32m2024-05-28 05:14:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 357abea3-7e2f-40f4-afed-4f35e96309a5 - 2069377 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_SUCCESS - Finished execution of step "gold__brazilian_ecommerce__order_frequency_monthly" in 1.63s.

@@ -1,0 +1,4 @@
+locations:
+  - location_name: pipeline
+    code_source:
+      package_name: pipeline

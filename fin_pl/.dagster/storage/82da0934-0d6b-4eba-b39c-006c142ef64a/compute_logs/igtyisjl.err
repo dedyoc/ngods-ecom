@@ -1,0 +1,62 @@
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - LOGS_CAPTURED - Started capturing logs in process (pid: 2426936).
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_START - Started execution of step "silver__brazilian_ecommerce__fact_sales".
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "order_items" using input manager "mysql_iceberg_io_manager"
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "order_payments" using input manager "mysql_iceberg_io_manager"
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "order_reviews" using input manager "mysql_iceberg_io_manager"
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - LOADED_INPUT - Loaded input "orders" using input manager "mysql_iceberg_io_manager"
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "order_items" of type "Any". (Type check passed).
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "order_payments" of type "Any". (Type check passed).
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "order_reviews" of type "Any". (Type check passed).
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_INPUT - Got input "orders" of type "Any". (Type check passed).
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - silver__brazilian_ecommerce__fact_sales - Creating fact_sales table from None, None, None, None
+[32m2024-05-25 08:21:22 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-25 08:21:23 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - silver__brazilian_ecommerce__fact_sales - DDL: CREATE TABLE iceberg.silver.fact_sales AS 
+            SELECT 
+            oi.order_id,
+            oi.order_item_id,
+            oi.product_id,
+            oi.seller_id,
+            o.customer_id,
+            oi.price,
+            oi.freight_value,
+            op.payment_type,
+            op.payment_value,
+            "or".review_score
+        FROM 
+            iceberg.bronze.order_items AS oi
+        JOIN 
+            iceberg.bronze.orders AS o ON oi.order_id = o.order_id
+        JOIN 
+            iceberg.bronze.order_payments AS op ON oi.order_id = op.order_id
+        JOIN 
+            iceberg.bronze.order_reviews AS "or" ON oi.order_id = "or".order_id;
+    
+[32m2024-05-25 08:21:23 +0700[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - 82da0934-0d6b-4eba-b39c-006c142ef64a - 2426936 - silver__brazilian_ecommerce__fact_sales - STEP_FAILURE - Execution of step "silver__brazilian_ecommerce__fact_sales" failed.
+
+dagster._core.errors.DagsterExecutionHandleOutputError: Error occurred while handling output "result" of step "silver__brazilian_ecommerce__fact_sales"::
+
+trino.exceptions.TrinoUserError: TrinoUserError(type=USER_ERROR, name=SYNTAX_ERROR, message="line 20:80: mismatched input ';'. Expecting: '%', '*', '+', ',', '-', '.', '/', 'AND', 'AT', 'CROSS', 'EXCEPT', 'FETCH', 'FULL', 'GROUP', 'HAVING', 'INNER', 'INTERSECT', 'JOIN', 'LEFT', 'LIMIT', 'NATURAL', 'OFFSET', 'OR', 'ORDER', 'RIGHT', 'UNION', 'WHERE', 'WINDOW', 'WITH', '[', '||', <EOF>", query_id=20240524_220758_00102_azpsd)
+
+Stack Trace:
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 54, in op_execution_error_boundary
+    yield
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_utils/__init__.py", line 465, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 800, in _gen_fn
+    gen_output = output_manager.handle_output(output_context, output.value)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/fin_pl/pipeline/resources/iceberg_io_manager.py", line 36, in handle_output
+    cur.execute(ddl_query)
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/dbapi.py", line 589, in execute
+    self._iterator = iter(self._query.execute())
+                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 797, in execute
+    self._result.rows += self.fetch()
+                         ^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 817, in fetch
+    status = self._request.process(response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 595, in process
+    raise self._process_error(response["error"], response.get("id"))
+[0m

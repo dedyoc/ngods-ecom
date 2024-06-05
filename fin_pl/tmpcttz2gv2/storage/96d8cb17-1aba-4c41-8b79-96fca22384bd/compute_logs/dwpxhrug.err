@@ -1,0 +1,32 @@
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - LOGS_CAPTURED - Started capturing logs in process (pid: 9028).
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - STEP_START - Started execution of step "silver__brazilian_ecommerce__dim_products".
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_products - Loading data from Iceberg table: product_category_name_translation
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - LOADED_INPUT - Loaded input "product_category_name_translation" using input manager "iceberg_io_manager", from output "result" of step "bronze__brazilian_ecommerce__product_category_name_translation"
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_products - Loading data from Iceberg table: products
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - LOADED_INPUT - Loaded input "products" using input manager "iceberg_io_manager", from output "result" of step "bronze__brazilian_ecommerce__products"
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - STEP_INPUT - Got input "product_category_name_translation" of type "Any". (Type check passed).
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - STEP_INPUT - Got input "products" of type "Any". (Type check passed).
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_products - Creating dim_products table from iceberg.brazilian_ecommerce.products, iceberg.brazilian_ecommerce.product_category_name_translation
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-29 06:24:56 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_products - DDL: CREATE TABLE iceberg.silver.dim_products AS 
+    SELECT 
+        p.product_id,
+        p.product_category_name,
+        pc.product_category_name_english,
+        p.product_name_length,
+        p.product_description_length,
+        p.product_photos_qty,
+        p.product_weight_g,
+        p.product_length_cm,
+        p.product_height_cm,
+        p.product_width_cm
+    FROM 
+        iceberg.bronze.products AS p
+    JOIN 
+        iceberg.bronze.product_category_name_translation AS pc ON p.product_category_name = pc.product_category_name
+    
+[32m2024-05-29 06:25:00 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_products - Table dim_products created in Iceberg
+[32m2024-05-29 06:25:01 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_products - Schema Info: {'product_id': 'varchar', 'product_category_name': 'varchar', 'product_category_name_english': 'varchar', 'product_name_length': 'integer', 'product_description_length': 'integer', 'product_photos_qty': 'integer', 'product_weight_g': 'integer', 'product_length_cm': 'integer', 'product_height_cm': 'integer', 'product_width_cm': 'integer'}
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - ASSET_MATERIALIZATION - Materialized value silver brazilian_ecommerce dim_products.
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - HANDLED_OUTPUT - Handled output "result" using IO manager "iceberg_io_manager"
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9028 - silver__brazilian_ecommerce__dim_products - STEP_SUCCESS - Finished execution of step "silver__brazilian_ecommerce__dim_products" in 7.62s.

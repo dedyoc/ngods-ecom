@@ -1,0 +1,55 @@
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - LOGS_CAPTURED - Started capturing logs in process (pid: 2039797).
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_START - Started execution of step "gold__brazilian_ecommerce__order_frequency_monthly".
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - gold__brazilian_ecommerce__order_frequency_monthly - Loading data from Iceberg table: dim_orders
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - LOADED_INPUT - Loaded input "dim_orders" using input manager "iceberg_io_manager"
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - gold__brazilian_ecommerce__order_frequency_monthly - Loading data from Iceberg table: fact_sales
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - LOADED_INPUT - Loaded input "fact_sales" using input manager "iceberg_io_manager"
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_INPUT - Got input "dim_orders" of type "Any". (Type check passed).
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_INPUT - Got input "fact_sales" of type "Any". (Type check passed).
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - gold__brazilian_ecommerce__order_frequency_monthly - Creating gold layer table 'order_frequency_monthly'
+[32m2024-05-28 05:05:47 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-28 05:05:48 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - gold__brazilian_ecommerce__order_frequency_monthly - DDL: CREATE TABLE iceberg.gold.order_frequency_monthly AS 
+    SELECT 
+        year(o.order_delivered_customer_date) AS year,
+        month(o.order_delivered_customer_date) AS month,
+        COUNT(*) AS order_frequency
+    FROM
+        iceberg.silver.fact_sales AS f
+    JOIN 
+        iceberg.silver.dim_orders AS o ON f.order_id = o.order_id
+    WHERE 
+        o.order_delivered_customer_date IS NOT NULL
+    GROUP BY 
+        year, month
+    ORDER BY 
+        year, month
+    
+[32m2024-05-28 05:05:48 +0700[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - f606d4df-22c2-47e1-800b-726e6d90c4e2 - 2039797 - gold__brazilian_ecommerce__order_frequency_monthly - STEP_FAILURE - Execution of step "gold__brazilian_ecommerce__order_frequency_monthly" failed.
+
+dagster._core.errors.DagsterExecutionHandleOutputError: Error occurred while handling output "result" of step "gold__brazilian_ecommerce__order_frequency_monthly"::
+
+trino.exceptions.TrinoUserError: TrinoUserError(type=USER_ERROR, name=COLUMN_NOT_FOUND, message="line 13:9: Column 'year' cannot be resolved", query_id=20240527_220548_00055_z84rq)
+
+Stack Trace:
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 54, in op_execution_error_boundary
+    yield
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_utils/__init__.py", line 465, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 800, in _gen_fn
+    gen_output = output_manager.handle_output(output_context, output.value)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/fin_pl/pipeline/resources/iceberg_io_manager.py", line 36, in handle_output
+    cur.execute(ddl_query)
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/dbapi.py", line 589, in execute
+    self._iterator = iter(self._query.execute())
+                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 797, in execute
+    self._result.rows += self.fetch()
+                         ^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 817, in fetch
+    status = self._request.process(response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 595, in process
+    raise self._process_error(response["error"], response.get("id"))
+[0m

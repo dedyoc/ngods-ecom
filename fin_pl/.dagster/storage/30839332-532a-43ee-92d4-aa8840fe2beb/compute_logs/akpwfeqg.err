@@ -1,0 +1,18 @@
+[32m2024-05-25 08:49:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - LOGS_CAPTURED - Started capturing logs in process (pid: 2516174).
+[32m2024-05-25 08:49:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - STEP_START - Started execution of step "silver__brazilian_ecommerce__dim_geolocation".
+[32m2024-05-25 08:49:02 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_geolocation - Loading data from Iceberg table: geolocation
+[32m2024-05-25 08:49:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - LOADED_INPUT - Loaded input "geolocation" using input manager "iceberg_io_manager", from output "result" of step "bronze__brazilian_ecommerce__geolocation"
+[32m2024-05-25 08:49:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - STEP_INPUT - Got input "geolocation" of type "Any". (Type check passed).
+[32m2024-05-25 08:49:02 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_geolocation - Creating dim_geolocation table from iceberg.brazilian_ecommerce.geolocation
+[32m2024-05-25 08:49:03 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-25 08:49:03 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_geolocation - DDL: CREATE TABLE iceberg.silver.dim_geolocation AS 
+    SELECT 
+        *
+    FROM 
+        iceberg.bronze.geolocation
+    
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_geolocation - Table dim_geolocation created in Iceberg
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_geolocation - row_count: 19016
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - ASSET_MATERIALIZATION - Materialized value silver brazilian_ecommerce dim_geolocation.
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - HANDLED_OUTPUT - Handled output "result" using IO manager "iceberg_io_manager"
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516174 - silver__brazilian_ecommerce__dim_geolocation - STEP_SUCCESS - Finished execution of step "silver__brazilian_ecommerce__dim_geolocation" in 1.62s.

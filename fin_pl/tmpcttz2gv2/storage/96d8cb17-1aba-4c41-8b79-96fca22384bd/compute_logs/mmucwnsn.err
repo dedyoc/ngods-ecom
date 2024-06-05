@@ -1,0 +1,5 @@
+[32m2024-05-29 06:24:49 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 8517 - LOGS_CAPTURED - Started capturing logs in process (pid: 8517).
+[32m2024-05-29 06:24:49 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 8517 - bronze__brazilian_ecommerce__products - STEP_START - Started execution of step "bronze__brazilian_ecommerce__products".
+[32m2024-05-29 06:24:49 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 8517 - bronze__brazilian_ecommerce__products - STEP_OUTPUT - Yielded output "result" of type "Nothing". (Type check passed).
+[32m2024-05-29 06:24:50 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 8517 - bronze__brazilian_ecommerce__products - ASSET_MATERIALIZATION - Materialized value bronze brazilian_ecommerce products.
+[32m2024-05-29 06:24:50 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 8517 - bronze__brazilian_ecommerce__products - STEP_SUCCESS - Finished execution of step "bronze__brazilian_ecommerce__products" in 239ms.

@@ -1,0 +1,49 @@
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - 2001166 - LOGS_CAPTURED - Started capturing logs in process (pid: 2001166).
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - 2001166 - silver__brazilian_ecommerce__dim_orders - STEP_START - Started execution of step "silver__brazilian_ecommerce__dim_orders".
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - silver__brazilian_ecommerce__dim_orders - Loading data from Iceberg table: orders
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - 2001166 - silver__brazilian_ecommerce__dim_orders - LOADED_INPUT - Loaded input "orders" using input manager "iceberg_io_manager"
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - 2001166 - silver__brazilian_ecommerce__dim_orders - STEP_INPUT - Got input "orders" of type "Any". (Type check passed).
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - silver__brazilian_ecommerce__dim_orders - Creating dim_orders table from iceberg.brazilian_ecommerce.orders
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - 2001166 - silver__brazilian_ecommerce__dim_orders - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - silver__brazilian_ecommerce__dim_orders - DDL: CREATE TABLE iceberg.silver.dim_orders AS 
+SELECT 
+    customer_id,
+    CASE WHEN order_approved_at IS NOT NULL THEN CAST(order_approved_at AS TIMESTAMP(6)) ELSE NULL END AS order_approved_at, 
+    CASE WHEN order_delivered_carrier_date IS NOT NULL THEN CAST(order_delivered_carrier_date AS TIMESTAMP(6)) ELSE NULL END AS order_delivered_carrier_date,
+    CASE WHEN order_delivered_customer_date IS NOT NULL THEN CAST(order_delivered_customer_date AS TIMESTAMP(6)) ELSE NULL END AS order_delivered_customer_date,
+    CASE WHEN order_estimated_delivery_date IS NOT NULL THEN CAST(order_estimated_delivery_date AS TIMESTAMP(6)) ELSE NULL END AS order_estimated_delivery_date,
+    order_id,
+    CASE WHEN order_purchase_timestamp IS NOT NULL THEN CAST(order_purchase_timestamp AS TIMESTAMP(6)) ELSE NULL END AS order_purchase_timestamp,
+    order_status
+FROM 
+    iceberg.bronze.orders
+    
+[32m2024-05-28 04:54:34 +0700[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - 268a7023-1716-4af5-8828-f0eb32c9da50 - 2001166 - silver__brazilian_ecommerce__dim_orders - STEP_FAILURE - Execution of step "silver__brazilian_ecommerce__dim_orders" failed.
+
+dagster._core.errors.DagsterExecutionHandleOutputError: Error occurred while handling output "result" of step "silver__brazilian_ecommerce__dim_orders"::
+
+trino.exceptions.TrinoUserError: TrinoUserError(type=USER_ERROR, name=INVALID_CAST_ARGUMENT, message="Value cannot be cast to timestamp: ", query_id=20240527_215434_00044_z84rq)
+
+Stack Trace:
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 54, in op_execution_error_boundary
+    yield
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_utils/__init__.py", line 465, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 800, in _gen_fn
+    gen_output = output_manager.handle_output(output_context, output.value)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/fin_pl/pipeline/resources/iceberg_io_manager.py", line 36, in handle_output
+    cur.execute(ddl_query)
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/dbapi.py", line 589, in execute
+    self._iterator = iter(self._query.execute())
+                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 797, in execute
+    self._result.rows += self.fetch()
+                         ^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 817, in fetch
+    status = self._request.process(response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 595, in process
+    raise self._process_error(response["error"], response.get("id"))
+[0m

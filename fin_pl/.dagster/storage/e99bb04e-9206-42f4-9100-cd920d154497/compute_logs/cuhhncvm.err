@@ -1,0 +1,40 @@
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - LOGS_CAPTURED - Started capturing logs in process (pid: 2023846).
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - STEP_START - Started execution of step "silver__brazilian_ecommerce__dim_orders".
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - silver__brazilian_ecommerce__dim_orders - Loading data from Iceberg table: orders
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - LOADED_INPUT - Loaded input "orders" using input manager "iceberg_io_manager"
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - STEP_INPUT - Got input "orders" of type "Any". (Type check passed).
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - silver__brazilian_ecommerce__dim_orders - Creating dim_orders table from iceberg.brazilian_ecommerce.orders
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-28 05:01:15 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - silver__brazilian_ecommerce__dim_orders - DDL: CREATE TABLE iceberg.silver.dim_orders AS 
+SELECT 
+    customer_id,
+    CASE 
+        WHEN order_approved_at = '' THEN NULL 
+        ELSE CAST(order_approved_at AS TIMESTAMP(6)) 
+    END AS order_approved_at, 
+    CASE 
+        WHEN order_delivered_carrier_date = '' THEN NULL
+        ELSE CAST(order_delivered_carrier_date AS TIMESTAMP(6))
+    END AS order_delivered_carrier_date,
+    CASE 
+        WHEN order_delivered_customer_date = '' THEN NULL
+        ELSE CAST(order_delivered_customer_date AS TIMESTAMP(6))
+    END AS order_delivered_customer_date,
+    CASE 
+        WHEN order_estimated_delivery_date = '' THEN NULL
+        ELSE CAST(order_estimated_delivery_date AS TIMESTAMP(6))
+    END AS order_estimated_delivery_date,
+    order_id,
+    CASE 
+        WHEN order_purchase_timestamp = '' THEN NULL
+        ELSE CAST(order_purchase_timestamp AS TIMESTAMP(6))
+    END AS order_purchase_timestamp,
+    order_status
+FROM 
+    iceberg.bronze.orders
+    
+[32m2024-05-28 05:01:16 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - silver__brazilian_ecommerce__dim_orders - Table dim_orders created in Iceberg
+[32m2024-05-28 05:01:17 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - silver__brazilian_ecommerce__dim_orders - Schema Info: {'customer_id': 'varchar', 'order_approved_at': 'timestamp(6)', 'order_delivered_carrier_date': 'timestamp(6)', 'order_delivered_customer_date': 'timestamp(6)', 'order_estimated_delivery_date': 'timestamp(6)', 'order_id': 'varchar', 'order_purchase_timestamp': 'timestamp(6)', 'order_status': 'varchar'}
+[32m2024-05-28 05:01:17 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - ASSET_MATERIALIZATION - Materialized value silver brazilian_ecommerce dim_orders.
+[32m2024-05-28 05:01:17 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - HANDLED_OUTPUT - Handled output "result" using IO manager "iceberg_io_manager"
+[32m2024-05-28 05:01:17 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e99bb04e-9206-42f4-9100-cd920d154497 - 2023846 - silver__brazilian_ecommerce__dim_orders - STEP_SUCCESS - Finished execution of step "silver__brazilian_ecommerce__dim_orders" in 1.99s.

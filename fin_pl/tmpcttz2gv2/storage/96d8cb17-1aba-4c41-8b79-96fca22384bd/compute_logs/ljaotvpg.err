@@ -1,0 +1,18 @@
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - LOGS_CAPTURED - Started capturing logs in process (pid: 9014).
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - STEP_START - Started execution of step "silver__brazilian_ecommerce__dim_customers".
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_customers - Loading data from Iceberg table: customers
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - LOADED_INPUT - Loaded input "customers" using input manager "iceberg_io_manager", from output "result" of step "bronze__brazilian_ecommerce__customers"
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - STEP_INPUT - Got input "customers" of type "Any". (Type check passed).
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_customers - Creating dim_customers table from iceberg.brazilian_ecommerce.customers
+[32m2024-05-29 06:24:54 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-29 06:24:56 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_customers - DDL: CREATE TABLE iceberg.silver.dim_customers AS 
+    SELECT 
+        *
+    FROM 
+        iceberg.bronze.customers
+    
+[32m2024-05-29 06:25:01 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_customers - Table dim_customers created in Iceberg
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - silver__brazilian_ecommerce__dim_customers - Schema Info: {'customer_id': 'varchar', 'customer_unique_id': 'varchar', 'customer_zip_code_prefix': 'integer', 'customer_city': 'varchar', 'customer_state': 'varchar'}
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - ASSET_MATERIALIZATION - Materialized value silver brazilian_ecommerce dim_customers.
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - HANDLED_OUTPUT - Handled output "result" using IO manager "iceberg_io_manager"
+[32m2024-05-29 06:25:02 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 96d8cb17-1aba-4c41-8b79-96fca22384bd - 9014 - silver__brazilian_ecommerce__dim_customers - STEP_SUCCESS - Finished execution of step "silver__brazilian_ecommerce__dim_customers" in 7.82s.

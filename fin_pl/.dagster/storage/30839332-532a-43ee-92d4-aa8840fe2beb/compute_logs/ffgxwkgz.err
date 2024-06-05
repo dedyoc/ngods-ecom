@@ -1,0 +1,56 @@
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - LOGS_CAPTURED - Started capturing logs in process (pid: 2516233).
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - STEP_START - Started execution of step "silver__brazilian_ecommerce__dim_products".
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_products - Loading data from Iceberg table: product_category_name_translation
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - LOADED_INPUT - Loaded input "product_category_name_translation" using input manager "iceberg_io_manager", from output "result" of step "bronze__brazilian_ecommerce__product_category_name_translation"
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_products - Loading data from Iceberg table: products
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - LOADED_INPUT - Loaded input "products" using input manager "iceberg_io_manager", from output "result" of step "bronze__brazilian_ecommerce__products"
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - STEP_INPUT - Got input "product_category_name_translation" of type "Any". (Type check passed).
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - STEP_INPUT - Got input "products" of type "Any". (Type check passed).
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_products - Creating dim_products table from iceberg.brazilian_ecommerce.products, iceberg.brazilian_ecommerce.product_category_name_translation
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mINFO[0m - __ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - silver__brazilian_ecommerce__dim_products - DDL: CREATE TABLE iceberg.silver.dim_products AS 
+    SELECT 
+        p.product_id,
+        p.product_category_name,
+        pc.product_category_name_english,
+        p.product_name_lenght,
+        p.product_description_lenght,
+        p.product_photos_qty,
+        p.product_weight_g,
+        p.product_length_cm,
+        p.product_height_cm,
+        p.product_width_cm
+    FROM 
+        iceberg.bronze.products AS p
+    JOIN 
+        iceberg.bronze.product_category_name_translation AS pc ON p.product_category_name = pc.product_category_name
+    
+[32m2024-05-25 08:49:04 +0700[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - 30839332-532a-43ee-92d4-aa8840fe2beb - 2516233 - silver__brazilian_ecommerce__dim_products - STEP_FAILURE - Execution of step "silver__brazilian_ecommerce__dim_products" failed.
+
+dagster._core.errors.DagsterExecutionHandleOutputError: Error occurred while handling output "result" of step "silver__brazilian_ecommerce__dim_products"::
+
+trino.exceptions.TrinoUserError: TrinoUserError(type=USER_ERROR, name=COLUMN_NOT_FOUND, message="line 6:9: Column 'p.product_name_lenght' cannot be resolved", query_id=20240524_223539_00126_azpsd)
+
+Stack Trace:
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 54, in op_execution_error_boundary
+    yield
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_utils/__init__.py", line 465, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 800, in _gen_fn
+    gen_output = output_manager.handle_output(output_context, output.value)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/fin_pl/pipeline/resources/iceberg_io_manager.py", line 36, in handle_output
+    cur.execute(ddl_query)
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/dbapi.py", line 589, in execute
+    self._iterator = iter(self._query.execute())
+                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 797, in execute
+    self._result.rows += self.fetch()
+                         ^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 817, in fetch
+    status = self._request.process(response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dedyoc/Documents/demo/ngods-stocks/myenv/lib64/python3.12/site-packages/trino/client.py", line 595, in process
+    raise self._process_error(response["error"], response.get("id"))
+[0m
