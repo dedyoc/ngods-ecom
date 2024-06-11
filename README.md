@@ -1,4 +1,4 @@
-# Ecommerce Analytics demo
+# Ecommerce Analytics demo (WIP)
 This repository contains an ecommerce analysis demo of the ngods data stack.
 
 # ngods
@@ -9,7 +9,7 @@ ngods stands for New Generation Opensource Data Stack. It includes the following
 - [Dagster](https://dagster.io/) for data orchetsration 
 - [Metabase](https://www.metabase.com/) for self-service data visualization (dashboards) 
 - [Minio](https://min.io) for local S3 storage 
-
-![ngods components](./img/ngods.architecture.png)
+![architecture](./img/MindMaps.jpg)
+![simple dashboard](./img/streamlit-·-Streamlit.png)
 
 ngods is open-sourced under a [BSD license](https://github.com/zsvoboda/ngods-stocks/blob/main/LICENSE) and it is distributed as a docker-compose script that supports Intel and ARM architectures.
