@@ -64,3 +64,5 @@ mysql/
 metabase-data/
 
 *.ipynb_checkpoints
+
+fin_pl/.dagster/
